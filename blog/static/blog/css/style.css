@@ -1,0 +1,658 @@
+/* ===============================
+   VARIABLES DES COULEURS
+================================ */
+:root {
+    --bleu-nuit: #1a237e;
+    --bleu-clair: #3949ab;
+    --orange: #ff6f00;
+    --orange-clair: #ff9800;
+    --blanc: #ffffff;
+    --gris-clair: #f4f6fb;
+    --gris: #777;
+    --ombre: rgba(0,0,0,0.15);
+}
+
+
+/* ===============================
+   PAGE GENERALE
+================================ */
+
+body {
+    background:rgb(248, 247, 247) !important;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    color: #333;
+      overflow-x: hidden;
+    max-width: 100%;
+}
+
+
+/* ===============================
+   TITRE PAGE
+================================ */
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--bleu-nuit) !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    animation: apparition 1s ease;
+}
+
+
+.page-title::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 5px;
+    background: var(--orange);
+    margin: 15px auto;
+    border-radius: 20px;
+}
+
+
+/* ===============================
+   CAROUSEL
+================================ */
+
+.carousel-custom {
+    width: 90%;
+    max-width: 1100px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px var(--ombre);
+}
+
+
+.carousel-custom img {
+    height: 450px;
+    object-fit: cover;
+    filter: brightness(75%);
+    transition: 0.6s ease;
+}
+
+
+.carousel-custom:hover img {
+    transform: scale(1.05);
+}
+
+
+.carousel-caption {
+    background: rgba(26,35,126,0.75);
+    padding: 20px;
+    border-radius: 15px;
+    bottom: 40px;
+}
+
+
+.carousel-caption h5 {
+    color: var(--orange-clair);
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+
+.carousel-caption p {
+    color: white;
+    font-size: 1.1rem;
+}
+
+
+/* Boutons carousel */
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: var(--orange);
+    border-radius: 50%;
+    padding: 20px;
+}
+
+
+/* Indicateurs */
+
+.carousel-indicators button {
+    background-color: var(--orange);
+}
+
+
+
+
+/* ===============================
+   SECTION ARTICLES
+================================ */
+
+.articles-section {
+    margin: 70px auto;
+    width: 90%;
+}
+
+
+.articles-title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--bleu-nuit);
+    margin-bottom: 40px;
+}
+
+
+.articles-title::after {
+    content:"";
+    display:block;
+    width:80px;
+    height:4px;
+    background:var(--orange);
+    margin:15px auto;
+    border-radius:10px;
+}
+
+
+
+/* ===============================
+   CARTES ARTICLES
+================================ */
+
+.card-article {
+
+    border:none;
+    border-radius:20px;
+    overflow:hidden;
+    background:white;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    transition:all 0.4s ease;
+    height:100%;
+}
+
+
+.card-article:hover {
+
+    transform:translateY(-10px);
+    box-shadow:0 20px 40px rgba(26,35,126,0.25);
+
+}
+
+
+
+/* Image article */
+
+.card-img-top {
+
+    height:230px;
+    object-fit:cover;
+    transition:0.5s;
+
+}
+
+
+.card-article:hover .card-img-top {
+
+    transform:scale(1.08);
+
+}
+
+
+
+/* Image vide */
+
+.card-img-placeholder {
+
+    height:230px;
+    background:linear-gradient(
+        135deg,
+        var(--bleu-nuit),
+        var(--bleu-clair)
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:1.2rem;
+    font-weight:bold;
+
+}
+
+
+
+/* Corps carte */
+
+.card-body {
+
+    padding:25px;
+
+}
+
+
+
+.meta-article {
+
+    color:var(--orange);
+    font-size:0.9rem;
+    font-weight:600;
+    margin-bottom:10px;
+
+}
+
+
+.card-title {
+
+    color:var(--bleu-nuit);
+    font-size:1.4rem;
+    font-weight:700;
+
+}
+
+
+
+.card-text {
+
+    color:#666;
+    line-height:1.6;
+
+}
+
+
+
+/* Bouton lire */
+
+.lire-plus {
+
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 20px;
+
+    background:var(--orange);
+    color:white;
+
+    text-decoration:none;
+    border-radius:30px;
+
+    font-weight:bold;
+    transition:0.3s;
+
+}
+
+
+.lire-plus:hover {
+
+    background:var(--bleu-nuit);
+    color:white;
+    transform:translateX(5px);
+
+}
+
+
+
+/* ===============================
+   MESSAGE VIDE
+================================ */
+
+.empty-state {
+
+    text-align:center;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    color:var(--gris);
+    box-shadow:0 10px 25px var(--ombre);
+
+} 
+
+
+
+/* ===============================
+   ANIMATION
+================================ */
+
+@keyframes apparition {
+
+    from {
+        opacity:0;
+        transform:translateY(-30px);
+    }
+
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+
+
+/* ===============================
+   RESPONSIVE MOBILE
+================================ */
+
+@media(max-width:768px){
+
+    .page-title{
+        font-size:1.8rem;
+    }
+
+
+    .carousel-custom img{
+        height:280px;
+    }
+
+
+    .carousel-caption h5{
+        font-size:1.3rem;
+    }
+
+
+    .articles-section{
+        width:95%;
+    }
+
+}
+
+.site-nav a.active {
+    color: #B8863B;
+    border-bottom: 2px solid #B8863B;
+}
+
+/* MENU */
+/*==================================
+            HEADER
+===================================*/
+
+.navbar-custom{
+
+    background:var(--bleu-nuit);
+
+    box-shadow:0 5px 18px rgba(0,0,0,.12);
+
+    padding:12px 0;
+
+}
+
+.navbar-brand img{
+
+    border:3px solid rgba(255,255,255,.2);
+
+    transition:.3s;
+
+}
+
+.navbar-brand:hover img{
+
+    transform:rotate(8deg) scale(1.05);
+
+}
+
+.navbar-brand span{
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+}
+
+/* Bouton connexion */
+
+.btn-outline-light{
+
+    border-radius:30px;
+
+    padding:8px 20px;
+
+    transition:.3s;
+
+}
+
+.btn-outline-light:hover{
+
+    background:var(--orange);
+
+    border-color:var(--orange);
+
+}
+
+.navbar-nav .nav-link {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    position: relative;
+    padding: 10px 15px !important;
+}
+
+/* Barre sous tous les liens */
+.navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    bottom: 0;
+    height: 3px;
+    background-color: #ff6f00;
+    border-radius: 10px;
+    transform: scaleX(0);
+    transition: transform 0.3s;
+}
+
+/* Lien actif */
+.navbar-nav .nav-link.active {
+    color: #ff6f00 !important;
+}
+
+.navbar-nav .nav-link.active::after {
+    transform: scaleX(1);
+}
+
+/* Survol */
+.navbar-nav .nav-link:hover {
+    color: #ff9800 !important;
+}
+
+/*==============================
+        PAGE CONTACT
+==============================*/
+
+.contact-section{
+
+    padding:70px 0;
+
+}
+
+.contact-box{
+
+    max-width:700px;
+
+    margin:auto;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.contact-title{
+
+    text-align:center;
+
+    color:var(--bleu-nuit);
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+}
+
+.contact-subtitle{
+
+    text-align:center;
+
+    color:var(--gris);
+
+    margin-bottom:35px;
+
+}
+
+.contact-box label{
+
+    font-weight:600;
+
+    color:var(--bleu-nuit);
+
+}
+
+.contact-box .form-control{
+
+    border-radius:10px;
+
+    border:1px solid #ddd;
+
+    padding:12px;
+
+    transition:.3s;
+
+}
+
+.contact-box .form-control:focus{
+
+    border-color:var(--orange);
+
+    box-shadow:0 0 8px rgba(255,111,0,.2);
+
+}
+
+.contact-btn{
+
+    background:var(--orange);
+
+    color:white;
+
+    border-radius:10px;
+
+    padding:12px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.contact-btn:hover{
+
+    background:var(--bleu-nuit);
+
+    color:white;
+
+}
+
+/*==================================
+            FOOTER
+===================================*/
+
+.footer{
+
+    background:var(--bleu-nuit);
+
+    color:white;
+
+    padding:45px 0 20px;
+
+}
+
+.footer-content{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:30px;
+
+}
+
+.footer-logo h4{
+
+    color:var(--orange);
+
+    font-weight:700;
+
+}
+
+.footer-logo p{
+
+    color:#d9d9d9;
+
+    margin-top:10px;
+
+}
+
+.footer-links{
+
+    display:flex;
+
+    gap:25px;
+
+}
+
+.footer-links a{
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:500;
+
+    transition:.3s;
+
+}
+
+.footer-links a:hover{
+
+    color:var(--orange);
+
+}
+
+.footer hr{
+
+    border-color:rgba(255,255,255,.15);
+
+    margin:30px 0 15px;
+
+}
+
+.copyright{
+
+    text-align:center;
+
+    color:#d0d0d0;
+
+    margin:0;
+
+    font-size:.95rem;
+
+}
+
+@media(max-width:768px){
+
+.footer-content{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.footer-links{
+
+justify-content:center;
+
+flex-wrap:wrap;
+
+}
+
+}
+

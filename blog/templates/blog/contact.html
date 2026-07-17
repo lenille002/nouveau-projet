@@ -1,0 +1,70 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+Contact
+{% endblock %}
+
+{% block content %}
+
+<section class="contact-section">
+
+    <div class="container">
+
+        <div class="contact-box">
+
+            <h1 class="contact-title">Contactez-nous</h1>
+
+            <p class="contact-subtitle">
+                Une question, une suggestion ou un besoin d'information ?
+                Remplissez le formulaire ci-dessous.
+            </p>
+
+            {% if success %}
+                <div class="alert alert-success">
+                    {{ success }}
+                </div>
+            {% endif %}
+
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Nom</label>
+                    <input type="text" class="form-control" name="nom" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Adresse email</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Sujet</label>
+                    <input type="text" class="form-control" name="sujet" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-control" rows="5" name="message" required></textarea>
+                </div>
+
+                <button type="submit" class="btn contact-btn w-100">
+                    Envoyer le message
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
