@@ -1,133 +1,560 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
-
-
 {% block content %}
 
-<!-- BIENVENUE -->
-<section class="hero-section">
+<!-- STYLES DES UNIVERS ROMANESQUES & ANIMATIONS ULTRA-IMMERSIVES -->
+<style>
+    /* Effet de lévitation fluide pour les cartes */
+    .card-article {
+        border: none;
+        border-radius: 16px;
+        background: #ffffff;
+        box-shadow: 0 10px 30px rgba(26, 35, 126, 0.05);
+        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        transform: translateY(0);
+    }
 
-    <div class="container text-center">
+    .card-article:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 45px rgba(255, 111, 0, 0.15);
+    }
 
-        <h1 class="page-title">
-            Bienvenue sur Mon Blog
+    /* Zoom cinématique de l'image au survol */
+    .img-zoom-container {
+        overflow: hidden;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        height: 200px;
+    }
+
+    .img-zoom-container img {
+        transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .card-article:hover .img-zoom-container img {
+        transform: scale(1.08);
+    }
+
+    /* Animation d'apparition subtile (Fade-in and Slide-up) */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animated-section {
+        animation: fadeInUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    .home-hero {
+        position: relative;
+        padding: 5rem 1rem 4rem 1rem;
+        background: linear-gradient(135deg, rgba(26, 35, 126, 0.04) 0%, rgba(255, 111, 0, 0.07) 100%);
+        border-bottom: 1px solid rgba(26, 35, 126, 0.06);
+        overflow: hidden;
+    }
+
+    /* Effet de brillance lumineux pulsé sur le bouton */
+    @keyframes pulseGlow {
+        0% { box-shadow: 0 0 0 0 rgba(255, 111, 0, 0.4); }
+        70% { box-shadow: 0 0 0 12px rgba(255, 111, 0, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 111, 0, 0); }
+    }
+
+    .search-toggle-btn {
+        background: white;
+        border: 1px solid rgba(26, 35, 126, 0.15);
+        color: var(--bleu-nuit);
+        padding: 11px 26px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        font-family: Georgia, serif;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        animation: pulseGlow 3s infinite;
+    }
+
+    .search-toggle-btn:hover {
+        background: var(--orange);
+        color: white;
+        border-color: var(--orange);
+        transform: translateY(-2px);
+    }
+
+    .search-collapse-box {
+        max-width: 450px;
+        margin: 18px auto 0 auto;
+        transition: all 0.4s ease;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 12px 22px;
+        background: #ffffff;
+        border: 1px solid rgba(26, 35, 126, 0.15);
+        border-radius: 30px;
+        font-size: 0.9rem;
+        color: var(--bleu-nuit);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        border-color: var(--orange);
+        box-shadow: 0 6px 25px rgba(255, 111, 0, 0.15);
+        transform: scale(1.01);
+    }
+
+    .content-wrapper-balanced {
+        max-width: 1140px;
+        margin: 0 auto;
+    }
+
+    /* Carrousel avec transition de fondu moderne */
+    .carousel-custom {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(26, 35, 126, 0.1);
+    }
+
+    .carousel-item img {
+        height: 380px;
+        object-fit: cover;
+    }
+
+    /* DESIGN ÉDITORIAL HAUT DE GAMME POUR LES CATÉGORIES (SANS ÉMOJIS) */
+    .genre-card {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        height: 220px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        cursor: pointer;
+        background: var(--bleu-nuit);
+        border: 2px solid transparent;
+        display: block;
+        text-decoration: none;
+    }
+
+    .genre-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+        opacity: 0.75;
+    }
+
+    .genre-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to top, rgba(26, 35, 126, 0.95) 15%, rgba(26, 35, 126, 0.4) 75%, transparent 100%);
+        transition: all 0.4s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 22px;
+    }
+
+    .genre-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--orange);
+        box-shadow: 0 15px 35px rgba(255, 111, 0, 0.2);
+    }
+
+    .genre-card:hover img {
+        transform: scale(1.1);
+        opacity: 0.5;
+    }
+
+    .genre-card:hover .genre-overlay {
+        background: linear-gradient(to top, rgba(255, 111, 0, 0.92) 15%, rgba(26, 35, 126, 0.85) 80%, transparent 100%);
+    }
+
+    .genre-tag {
+        font-size: 0.7rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-bottom: 8px;
+        align-self: flex-start;
+        backdrop-filter: blur(4px);
+        font-weight: 600;
+    }
+
+    .genre-card.active-category {
+        border-color: var(--orange);
+        box-shadow: 0 0 0 4px rgba(255, 111, 0, 0.25);
+    }
+
+    /* Modal compact et fluide */
+    .chic-modal .modal-content {
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        animation: fadeInUp 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    .chic-modal .modal-header {
+        background: var(--bleu-nuit);
+        color: white;
+        padding: 15px 20px;
+        border-bottom: none;
+    }
+
+    .chic-modal .modal-body {
+        padding: 22px;
+        background: #ffffff;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+</style>
+
+<!-- SECTION HERO POÉTIQUE & ANIMÉE -->
+<section class="home-hero text-center animated-section">
+    <div class="container position-relative">
+        <h1 class="hero-title-poetic mb-3 mx-auto" style="max-width: 800px; font-family: 'Georgia', serif; font-size: 2.4rem; font-style: italic; color: var(--bleu-nuit); line-height: 1.3;">
+            « Là où le souffle des pages rencontre l'éternité d'un <span style="color: var(--orange); font-style: normal; position: relative;">destin romanesque</span> »
         </h1>
-
-        <p class="hero-description">
-            Découvrez des articles passionnants sur la culture, la littérature et bien d'autres sujets qui éveillent la
-            curiosité et enrichissent vos connaissances.
+        <p class="text-secondary mx-auto mb-4" style="max-width: 620px; font-size: 1.05rem; line-height: 1.7; font-family: Georgia, serif; font-style: italic;">
+            Entrez dans le sanctuaire des mots. Laissez vos pas guider votre âme à travers des chapitres vibrants, des drames intimes et des voyages inoubliables.
         </p>
 
-        
+        <!-- BOUTON DE RECHERCHE DÉROULANT ANIMÉ -->
+        <button class="search-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#searchCollapseContent" aria-expanded="false" aria-controls="searchCollapseContent">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+            <span>Quêtez une œuvre ou un auteur...</span>
+        </button>
 
+        <!-- ZONE DE RECHERCHE DÉROULANTE -->
+        <div class="collapse search-collapse-box" id="searchCollapseContent">
+            <input type="text" id="searchInput" class="search-input" placeholder="Chercher par titre, par plume, par émotion..." autocomplete="off">
+        </div>
     </div>
-
 </section>
 
-<!-- CAROUSEL -->
-<div class="container">
-    <div id="carouselExample" class="carousel slide carousel-fade carousel-custom mx-auto" data-bs-ride="carousel">
+<!-- CONTENEUR GLOBAL ÉQUIBRÉ -->
+<div class="content-wrapper-balanced py-4 px-3 px-md-4">
 
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <!-- CAROUSEL ANIMÉ -->
+    <div class="mb-5 animated-section" style="animation-delay: 0.1s;">
+        <div id="carouselExample" class="carousel slide carousel-fade carousel-custom mx-auto" data-bs-ride="carousel">
+
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'blog/image/7786_danse-bamendjou-3.jpg' %}" alt="Danse Bamendjou" class="d-block w-100">
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-3 p-2 backdrop-blur">
+                        <h5 class="font-serif fs-6 mb-1">Danse Bamendjou</h5>
+                        <p class="mb-0 font-italic small">Quand la tradition s'écrit comme un poème vivant</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'blog/image/bovary.webp' %}" alt="bovary" class="d-block w-100">
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-3 p-2">
+                        <h5 class="font-serif fs-6 mb-1">MADAME BOVARY</h5>
+                        <p class="mb-0 font-italic small">Le chef-d'œuvre absolu de l'illusion romanesque</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="{% static 'blog/image/ndzi.webp' %}" alt="ndzi" class="d-block w-100">
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-3 p-2">
+                        <h5 class="font-serif fs-6 mb-1">Paul Ndzi</h5>
+                        <p class="mb-0 font-italic small">L'architecte des lignes et des codes modernes</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Précédent</span>
+            </button>
+
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Suivant</span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- VITRINE DES CATÉGORIES DE ROMANS (STYLE ÉDITORIAL PRO, SANS ÉMOJIS) -->
+    <div class="mb-5 animated-section" style="animation-delay: 0.15s;">
+        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
+            <h2 class="m-0" style="font-size: 1.5rem; font-weight: 700; color: var(--bleu-nuit); font-family: Georgia, serif;">Explorer par Univers Romanesque</h2>
+            <button id="resetFilterBtn" class="btn btn-sm btn-outline-secondary rounded-pill px-3" style="display: none;">Voir tout</button>
         </div>
 
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{% static 'blog/image/7786_danse-bamendjou-3.jpg' %}" alt="Danse Bamendjou" class="d-block w-100">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Danse Bamendjou</h5>
-                    <p>Tradition et culture</p>
+        <div class="row g-3">
+            <!-- 1. Dark Romance -->
+            <div class="col-6 col-lg-3">
+                <div class="genre-card category-filter-item" data-category="dark romance">
+                    <img src="{% static 'blog/image/bovary.webp' %}" alt="Dark Romance">
+                    <div class="genre-overlay">
+                        <span class="genre-tag">Collection Intense</span>
+                        <h5 class="text-white fw-bold mb-1" style="font-family: Georgia, serif; font-size: 1.05rem;">Dark Romance</h5>
+                        <p class="text-white-50 small mb-0 d-none d-md-block" style="font-size: 0.75rem;">Passions sombres et amours interdites.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="carousel-item">
-                <img src="{% static 'blog/image/bovary.webp' %}" alt="bovary" class="d-block w-100">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>MADAME BOVARY</h5>
-                    <p>Un aperçu de notre roman</p>
+            <!-- 2. Romance Fantastique -->
+            <div class="col-6 col-lg-3">
+                <div class="genre-card category-filter-item" data-category="fantastique">
+                    <img src="{% static 'blog/image/ndzi.webp' %}" alt="Romance Fantastique">
+                    <div class="genre-overlay">
+                        <span class="genre-tag">Collection Magique</span>
+                        <h5 class="text-white fw-bold mb-1" style="font-family: Georgia, serif; font-size: 1.05rem;">Fantastique</h5>
+                        <p class="text-white-50 small mb-0 d-none d-md-block" style="font-size: 0.75rem;">Magie, sorts et destins éternels.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="carousel-item">
-                <img src="{% static 'blog/image/ndzi.webp' %}" alt="ndzi" class="d-block w-100">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Paul Ndzi</h5>
-                    <p>Un aperçu de notre consultant en informatique </p>
+            <!-- 3. Romance Érotique & Sensuelle -->
+            <div class="col-6 col-lg-3">
+                <div class="genre-card category-filter-item" data-category="erotique">
+                    <img src="{% static 'blog/image/7786_danse-bamendjou-3.jpg' %}" alt="Romance Érotique">
+                    <div class="genre-overlay">
+                        <span class="genre-tag">Collection Passion</span>
+                        <h5 class="text-white fw-bold mb-1" style="font-family: Georgia, serif; font-size: 1.05rem;">Érotique & Sensuel</h5>
+                        <p class="text-white-50 small mb-0 d-none d-md-block" style="font-size: 0.75rem;">Intensité des corps et des cœurs.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Romance Contemporaine -->
+            <div class="col-6 col-lg-3">
+                <div class="genre-card category-filter-item" data-category="contemporaine">
+                    <img src="{% static 'blog/image/bovary.webp' %}" alt="Romance Contemporaine">
+                    <div class="genre-overlay">
+                        <span class="genre-tag">Collection Moderne</span>
+                        <h5 class="text-white fw-bold mb-1" style="font-family: Georgia, serif; font-size: 1.05rem;">Contemporaine</h5>
+                        <p class="text-white-50 small mb-0 d-none d-md-block" style="font-size: 0.75rem;">Émotions du monde moderne.</p>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Précédent</span>
-        </button>
+    <!-- SECTION DES ARTICLES ANIMÉE -->
+    <div class="articles-section animated-section" style="animation-delay: 0.2s;">
+        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
+            <h2 class="articles-title m-0" style="font-size: 1.5rem; font-weight: 700; color: var(--bleu-nuit); font-family: Georgia, serif;">Chroniques & Récits Choisis</h2>
+            <span class="text-muted small fst-italic">Bibliothèque ouverte</span>
+        </div>
 
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Suivant</span>
-        </button>
+        <div class="row g-4 justify-content-center" id="articlesContainer">
 
+            {% for article in articles %}
+            <div class="col-12 col-sm-6 col-lg-4 article-card-wrapper" 
+                 data-title="{{ article.titre|lower }}" 
+                 data-author="{{ article.auteur|lower }}"
+                 data-category="{% if article.categorie %}{{ article.categorie|lower }}{% else %}contemporaine{% endif %}">
+
+                <div class="card card-article h-100">
+
+                    {% if article.image %}
+                        <div class="img-zoom-container">
+                            <img src="{{ article.image.url }}" class="w-100 h-100" alt="{{ article.titre }}" style="object-fit: cover;">
+                        </div>
+                    {% else %}
+                        <div class="card-img-placeholder d-flex align-items-center justify-content-center bg-light text-muted" style="height: 200px;">
+                            Récit sans illustration
+                        </div>
+                    {% endif %}
+
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="meta-article text-muted small mb-2">
+                            Par {{ article.auteur }} · {{ article.date_creation|date:"d M Y" }}
+                        </div>
+
+                        <h5 class="card-title fw-bold text-dark fs-5 mb-2">
+                            {{ article.titre }}
+                        </h5>
+
+                        <p class="card-text text-secondary small flex-grow-1">
+                            {{ article.description|truncatechars:90 }}
+                        </p>
+
+                        <!-- Déclencheur du modal -->
+                        <a href="#" class="lire-plus mt-3 text-decoration-none fw-semibold d-inline-flex align-items-center gap-1" style="color: white; transition: gap 0.3s ease;"
+                           data-bs-toggle="modal" 
+                           data-bs-target="#articleModal"
+                           data-title="{{ article.titre }}"
+                           data-author="{{ article.auteur }}"
+                           data-date="{{ article.date_creation|date:'d M Y' }}"
+                           data-description="{{ article.description }}"
+                           data-image="{% if article.image %}{{ article.image.url }}{% endif %}"
+                           onmouseover="this.style.gap='6px';" onmouseout="this.style.gap='1px';">
+                            Ouvrir le livre →
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="col-12 text-center py-5">
+                <div class="empty-state text-muted p-5 bg-white rounded-4 shadow-sm">
+                    <h4>Aucun roman ou récit disponible</h4>
+                    <p class="mb-0 font-italic">Les encriers sèchent à peine. Revenez très vite pour de nouvelles épopées.</p>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL LITTÉRAIRE -->
+<div class="modal fade chic-modal" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold text-uppercase fs-6 font-serif" id="modalTitle" style="letter-spacing: 1px;"></h5>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div id="modalImageContainer" class="mb-3 text-center">
+                    <img id="modalImage" src="" alt="" class="img-fluid rounded shadow-sm" style="max-height: 200px; object-fit: cover; width: 100%;">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2 text-muted small fw-semibold border-bottom pb-2">
+                    <span id="modalAuthor" class="small" style="color: var(--orange);"></span>
+                    <span id="modalDate" class="small"></span>
+                </div>
+                <div id="modalDescription" class="text-secondary mt-2" style="line-height: 1.6; white-space: pre-line; font-size: 0.95rem; font-family: Georgia, serif;"></div>
+            </div>
+            <div class="modal-footer border-0 bg-light py-2 px-3">
+                <button type="button" class="btn btn-outline-secondary btn-sm px-4 rounded-pill" data-bs-dismiss="modal">Fermer le chapitre</button>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- ARTICLES -->
-<div class="articles-section">
-    <h2 class="articles-title">Derniers articles</h2>
+<!-- SCRIPT DE FILTRAGE PAR CATÉGORIE ET RECHERCHE -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const articleCards = document.querySelectorAll('.article-card-wrapper');
+        const categoryCards = document.querySelectorAll('.category-filter-item');
+        const resetFilterBtn = document.getElementById('resetFilterBtn');
 
-    <div class="row g-4 justify-content-center">
+        let activeCategory = null;
 
-        {% for article in articles %}
-        <div class="col-12 col-sm-6 col-lg-4">
+        // Fonction de filtrage combinée (Recherche + Clic sur catégorie)
+        function filterArticles() {
+            const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-            <div class="card card-article">
+            articleCards.forEach(card => {
+                const titleLower = card.getAttribute('data-title');
+                const authorLower = card.getAttribute('data-author');
+                const cardCategory = card.getAttribute('data-category');
 
-                {% if article.image %}
-                    <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.titre }}">
-                {% else %}
-                    <div class="card-img-placeholder">
-                        Pas d'image
-                    </div>
-                {% endif %}
+                const matchesSearch = titleLower.includes(searchTerm) || authorLower.includes(searchTerm);
+                const matchesCategory = !activeCategory || cardCategory.includes(activeCategory);
 
-                <div class="card-body">
-                    <div class="meta-article">
-                        {{ article.auteur }} · {{ article.date_creation|date:"d M Y" }}
-                    </div>
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.4s ease forwards';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
 
-                    <h5 class="card-title">
-                        {{ article.titre }}
-                    </h5>
+        // Écouteur pour la barre de recherche
+        if (searchInput) {
+            searchInput.addEventListener('input', filterArticles);
+        }
 
-                    <p class="card-text">
-                        {{ article.description|truncatechars:100 }}
-                    </p>
+        // Écouteur pour le clic sur les cartes de catégories (Filtrage instantané)
+        categoryCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const selectedCat = this.getAttribute('data-category');
 
-                    <a href="#" class="lire-plus">
-                        Lire l'article →
-                    </a>
-                </div>
+                if (activeCategory === selectedCat) {
+                    activeCategory = null;
+                    this.classList.remove('active-category');
+                    resetFilterBtn.style.display = 'none';
+                } else {
+                    categoryCards.forEach(c => c.classList.remove('active-category'));
+                    activeCategory = selectedCat;
+                    this.classList.add('active-category');
+                    resetFilterBtn.style.display = 'inline-block';
+                }
 
-            </div>
+                filterArticles();
+            });
+        });
 
-        </div>
+        // Bouton réinitialiser le filtre de catégorie
+        if (resetFilterBtn) {
+            resetFilterBtn.addEventListener('click', function() {
+                activeCategory = null;
+                categoryCards.forEach(c => c.classList.remove('active-category'));
+                this.style.display = 'none';
+                filterArticles();
+            });
+        }
 
-        {% empty %}
+        // Injection des données dans le modal compact
+        const articleModal = document.getElementById('articleModal');
+        if (articleModal) {
+            articleModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                
+                document.getElementById('modalTitle').textContent = button.getAttribute('data-title');
+                document.getElementById('modalAuthor').textContent = "Écrit par " + button.getAttribute('data-author');
+                document.getElementById('modalDate').textContent = button.getAttribute('data-date');
+                document.getElementById('modalDescription').textContent = button.getAttribute('data-description');
 
-        <div class="empty-state">
-            Aucun article pour le moment. Reviens bientôt !
-        </div>
+                const modalImg = document.getElementById('modalImage');
+                const imgContainer = document.getElementById('modalImageContainer');
+                const imageUrl = button.getAttribute('data-image');
 
-        {% endfor %}
-
-    </div>
-</div>
+                if(imageUrl && imageUrl.trim() !== "") {
+                    modalImg.src = imageUrl;
+                    imgContainer.style.display = 'block';
+                } else {
+                    imgContainer.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
 
 {% endblock content %} 
 
 {% block title %}
-    accueil
+    Accueil - Récits & Romans
 {% endblock title %}

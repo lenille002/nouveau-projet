@@ -1,45 +1,340 @@
-{% extends 'Blog/base.html' %}
+{% extends 'blog/base.html' %}
 {% load static %}
 
 {% block content %}
 
+<!-- STYLES IMMERSIFS & EFFET ROMANESQUE -->
 <style>
-  
+    .blog-hero {
+        position: relative;
+        padding: 5rem 0 3.5rem 0;
+        background: linear-gradient(135deg, rgba(26, 35, 126, 0.05) 0%, rgba(255, 111, 0, 0.08) 100%);
+        border-bottom: 1px solid rgba(26, 35, 126, 0.08);
+        overflow: hidden;
+    }
+
+    /* Élément graphique de style littéraire en arrière-plan */
+    .blog-hero::before {
+        content: "“";
+        position: absolute;
+        top: -20px;
+        left: 5%;
+        font-size: 15rem;
+        color: rgba(26, 35, 126, 0.03);
+        font-family: Georgia, serif;
+        line-height: 1;
+        pointer-events: none;
+    }
+
+    .hero-catchphrase {
+        font-family: "Georgia", "Poppins", serif;
+        font-size: 2.3rem;
+        font-weight: 800;
+        color: var(--bleu-nuit);
+        line-height: 1.3;
+        letter-spacing: -0.5px;
+    }
+
+    .hero-catchphrase span {
+        color: var(--orange);
+        position: relative;
+    }
+
+    .hero-catchphrase span::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 2px;
+        width: 100%;
+        height: 4px;
+        background: var(--orange);
+        border-radius: 2px;
+        opacity: 0.3;
+    }
+
+    /* Bouton déclencheur de la recherche élégant */
+    .search-toggle-btn {
+        background: white;
+        border: 1px solid rgba(26, 35, 126, 0.15);
+        color: var(--bleu-nuit);
+        padding: 10px 24px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .search-toggle-btn:hover {
+        background: var(--orange);
+        color: white;
+        border-color: var(--orange);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 111, 0, 0.25);
+    }
+
+    .search-collapse-box {
+        max-width: 480px;
+        margin: 15px auto 0 auto;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 12px 22px;
+        background: #ffffff;
+        border: 1px solid rgba(26, 35, 126, 0.15);
+        border-radius: 30px;
+        font-size: 0.9rem;
+        color: var(--bleu-nuit);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        border-color: var(--orange);
+        box-shadow: 0 6px 20px rgba(255, 111, 0, 0.12);
+    }
+
+    /* Cartes d'articles au style "Roman / Livre" */
+    .card-article {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .card-article:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 22px 45px rgba(26, 35, 126, 0.12);
+    }
+
+    .card-img-top {
+        transition: transform 0.6s ease;
+    }
+
+    .card-article:hover .card-img-top {
+        transform: scale(1.05);
+    }
+
+    .card-article .card-body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        padding: 1.6rem;
+    }
+
+    /* Bouton "Lire l'histoire" chic et centré */
+    .btn-lire-chic {
+        margin-top: auto;
+        align-self: center;
+        background-color: var(--orange);
+        color: white;
+        border: none;
+        padding: 10px 26px;
+        border-radius: 30px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3);
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .btn-lire-chic:hover {
+        background-color: var(--bleu-nuit);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3);
+    }
+
+    /* Modal immersif */
+    .chic-modal .modal-content {
+        border-radius: 18px;
+        border: none;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+
+    .chic-modal .modal-header {
+        background: var(--bleu-nuit);
+        color: white;
+        padding: 18px 24px;
+        border-bottom: none;
+    }
+
+    .chic-modal .modal-body {
+        padding: 28px;
+        background: #ffffff;
+    }
 </style>
 
-<h1 class="page-title text-center my-5">
-    Mon Blog
-</h1>
-   
-<!-- ARTICLES -->
-  <div class="articles-section">
-    <h2 class="articles-title">Derniers articles</h2>
-    <div class="row g-4">
-      {% for article in articles %}
-      <div class="col-md-4">
-        <div class="card card-article">
-          {% if article.image %}
-          <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.titre }}">
-          {% endif %}
-          <div class="card-body">
-            <div class="meta-article">{{ article.auteur }} · {{ article.date_creation }}</div>
-            <h5 class="card-title">{{ article.titre }}</h5>
-            <p class="card-text">{{ article.description|truncatechars:100 }}</p>
-            <a href="#" class="lire-plus">Lire l'article →</a>
-          </div>
+<!-- SECTION HERO CAPTIVANTE & LITTÉRAIRE -->
+<section class="blog-hero text-center">
+    <div class="container position-relative">
+        <h1 class="hero-catchphrase mb-3 mx-auto" style="max-width: 800px;">
+            Et si chaque page tournait le destin d'une <span>vie inoubliable</span> ?
+        </h1>
+        <p class="text-secondary mx-auto mb-4" style="max-width: 600px; font-size: 1.05rem; line-height: 1.7; font-weight: 400;">
+            Laissez-vous transporter par la force des mots, nos récits poignants et nos chroniques pensées pour éveiller l'émotion de chaque lecteur.
+        </p>
+
+        <!-- Bouton recherche élégant -->
+        <button class="search-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#searchCollapseContent" aria-expanded="false" aria-controls="searchCollapseContent">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+            <span>Explorer les chapitres et récits</span>
+        </button>
+
+        <!-- Zone de recherche repliable -->
+        <div class="collapse search-collapse-box" id="searchCollapseContent">
+            <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un titre, un auteur, une émotion..." autocomplete="off">
         </div>
-      </div>
-      {% empty %}
-      <div class="empty-state">Aucun article pour le moment. Reviens bientôt !</div>
-      {% endfor %}
     </div>
-  </div>
-
-
+</section>
     
+<!-- ARTICLES -->
+<div class="articles-section py-5">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="articles-title m-0" style="font-size: 1.6rem; font-weight: 700; color: var(--bleu-nuit);">Les Œuvres & Récits</h2>
+            <span class="text-muted small">Sélection littéraire</span>
+        </div>
+        
+        <div class="row g-4 justify-content-center" id="articlesContainer">
+            {% for article in articles %}
+            <div class="col-12 col-sm-6 col-lg-4 d-flex align-items-stretch article-card-wrapper" 
+                 data-title="{{ article.titre|lower }}" 
+                 data-author="{{ article.auteur|lower }}"
+                 style="animation-delay: {{ forloop.counter0|add:1|slugify }}00ms;">
+                
+                <div class="card card-article w-100">
+                    <div style="overflow: hidden; height: 210px;">
+                        {% if article.image %}
+                        <img src="{{ article.image.url }}" class="card-img-top w-100 h-100" alt="{{ article.titre }}" style="object-fit: cover;">
+                        {% else %}
+                        <div class="card-img-placeholder d-flex align-items-center justify-content-center bg-light text-muted w-100 h-100">
+                            Récit sans illustration
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="meta-article text-muted small mb-2" style="font-size: 0.8rem; font-weight: 600;">
+                            Par {{ article.auteur }} · {{ article.date_creation|date:"d M Y" }}
+                        </div>
+                        <h5 class="card-title fw-bold mb-2" style="color: var(--bleu-nuit); font-size: 1.2rem;">{{ article.titre }}</h5>
+                        <p class="card-text text-secondary small mb-4" style="line-height: 1.6;">{{ article.description|truncatechars:95 }}</p>
+                        
+                        <!-- Bouton Déclencheur du modal -->
+                        <a href="#" class="btn-lire-chic" 
+                           data-bs-toggle="modal" 
+                           data-bs-target="#articleModal"
+                           data-title="{{ article.titre }}"
+                           data-author="{{ article.auteur }}"
+                           data-date="{{ article.date_creation|date:'d M Y' }}"
+                           data-description="{{ article.description }}"
+                           data-image="{% if article.image %}{{ article.image.url }}{% endif %}">
+                            Découvrir l'histoire
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="empty-state text-muted p-5 bg-white rounded-4 shadow-sm">
+                    <h4>Aucun roman ou récit disponible</h4>
+                    <p class="mb-0">Les chapitres sont en cours d'écriture. Revenez très vite !</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- MODAL LITTÉRAIRE -->
+<div class="modal fade chic-modal" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold text-uppercase fs-6" id="modalTitle" style="letter-spacing: 1px;"></h5>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div id="modalImageContainer" class="mb-4 text-center">
+                    <img id="modalImage" src="" alt="" class="img-fluid rounded shadow" style="max-height: 280px; object-fit: cover; width: 100%;">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3 text-muted small fw-semibold border-bottom pb-2">
+                    <span id="modalAuthor" class="fs-6" style="color: var(--orange);"></span>
+                    <span id="modalDate"></span>
+                </div>
+                <div id="modalDescription" class="text-secondary mt-3" style="line-height: 1.8; white-space: pre-line; font-size: 0.98rem; font-family: Georgia, serif;"></div>
+            </div>
+            <div class="modal-footer border-0 bg-light py-3 px-4">
+                <button type="button" class="btn btn-outline-secondary btn-sm px-4 rounded-pill" data-bs-dismiss="modal">Fermer le chapitre</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPT DE FILTRAGE INSTANTANÉ ET DU MODAL -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const articleCards = document.querySelectorAll('.article-card-wrapper');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().trim();
+
+            articleCards.forEach(card => {
+                const titleLower = card.getAttribute('data-title');
+                const authorLower = card.getAttribute('data-author');
+
+                if (titleLower.includes(term) || authorLower.includes(term)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        const articleModal = document.getElementById('articleModal');
+        articleModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            
+            document.getElementById('modalTitle').textContent = button.getAttribute('data-title');
+            document.getElementById('modalAuthor').textContent = "Écrit par " + button.getAttribute('data-author');
+            document.getElementById('modalDate').textContent = button.getAttribute('data-date');
+            document.getElementById('modalDescription').textContent = button.getAttribute('data-description');
+
+            const modalImg = document.getElementById('modalImage');
+            const imgContainer = document.getElementById('modalImageContainer');
+            const imageUrl = button.getAttribute('data-image');
+
+            if(imageUrl && imageUrl.trim() !== "") {
+                modalImg.src = imageUrl;
+                imgContainer.style.display = 'block';
+            } else {
+                imgContainer.style.display = 'none';
+            }
+        });
+    });
+</script>
+
 {% endblock content %}
 
-
 {% block title %}
-    Blog
+    Récits & Romans
 {% endblock title %}
